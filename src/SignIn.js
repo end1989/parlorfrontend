@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, Dimensions, ImageBackground, Image } from "react-native";
 import { Form, Item, Label, Input, Button } from "native-base";
+import { Actions } from "react-native-router-flux";
+import HomePage from "./HomePage";
 
 var myBackground = require("../assets/32710104676_dd5a8282de_z.jpg");
 // var height = Dimensions.get("window").height;

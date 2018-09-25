@@ -14,7 +14,7 @@ const SERVER_URL = "ws://localhost:3000/websocket";
 export default class App extends React.Component {
     state = {
         loggedIn: true,
-        signUp: false
+        signUp: true
     };
     componentWillMount() {
         console.log("connecting");
@@ -49,7 +49,7 @@ export default class App extends React.Component {
     renderView = () => {
         if (!this.state.loggedIn) {
             return <SignIn signIn={this.signIn} />;
-        } else if (this.state.signUp) {
+        } else if (!this.state.signUp) {
             return <SignUp />;
         } else {
             return <HomePage />;
@@ -62,9 +62,6 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center"
+        flex: 1
     }
 });

@@ -12,17 +12,20 @@ import {
 } from "native-base";
 import { MapView } from "expo";
 import Meteor, { createContainer } from "react-native-meteor";
+import { WebBrowser } from "expo";
 
 class HomePage extends React.Component {
     state = {
         location: {
             latitude: 37.78825,
             longitude: -122.4324,
+            user: "",
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
         }
     };
     addStylist = () => {
+        this.setState({ user: Meteor.userId() });
         Meteor.call("stylist.add", this.state.location, (err, res) => {
             console.log(this.state.location);
 
@@ -37,10 +40,32 @@ class HomePage extends React.Component {
                         latitude: p.latitude,
                         longitude: p.longitude
                     }}
+                    ref={ref => {
+                        this.marker = ref;
+                    }}
                     key={p._id}
-                />
+                >
+                    <MapView.Callout style={{ alignContent: "center" }}>
+                        <Text>
+                            {p.user} {p.user}
+                        </Text>
+                        <Text>{p._id}</Text>
+                        <Button
+                            style={{ width: "100%", justifyContent: "center" }}
+                            title="Open WebBrowser"
+                            onPress={this.handlePressButton.bind(p.user)}
+                        >
+                            <Text style={{ color: "white" }}>
+                                Visit My Page
+                            </Text>
+                        </Button>
+                    </MapView.Callout>
+                </MapView.Marker>
             );
         });
+    };
+    handlePressButton = page => {
+        WebBrowser.openBrowserAsync("https://google.com");
     };
     render() {
         console.log(this.props.stylist);
@@ -94,6 +119,7 @@ class HomePage extends React.Component {
         );
     }
 }
+
 export default createContainer(params => {
     Meteor.subscribe("stylist");
 

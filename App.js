@@ -13,8 +13,8 @@ const SERVER_URL = "ws://localhost:3000/websocket";
 
 export default class App extends React.Component {
     state = {
-        loggedIn: true,
-        signUp: true
+        loggedIn: false,
+        signUp: false
     };
     componentWillMount() {
         console.log("connecting");
@@ -49,7 +49,7 @@ export default class App extends React.Component {
     renderView = () => {
         if (!this.state.loggedIn) {
             return <SignIn signIn={this.signIn} />;
-        } else if (!this.state.signUp) {
+        } else if (this.state.signUp) {
             return <SignUp />;
         } else {
             return <HomePage />;

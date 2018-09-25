@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Platform } from "react-native";
 import {
     Header,
     Left,
@@ -13,7 +13,7 @@ import {
     Content,
     Footer
 } from "native-base";
-import { MapView } from "expo";
+import { MapView, Location, Permissions } from "expo";
 import Meteor, { createContainer } from "react-native-meteor";
 import { WebBrowser } from "expo";
 import { Actions } from "react-native-router-flux";
@@ -22,8 +22,8 @@ import mapMarker from "../assets/salon-512.png";
 class HomePage extends React.Component {
     state = {
         location: {
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 39.742043,
+            longitude: -104.991531,
             user: "",
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
@@ -38,12 +38,17 @@ class HomePage extends React.Component {
         });
     };
     renderStylist = () => {
+        console.log("maptest", this.props.stylist[40]);
+
         return this.props.stylist.map(p => {
+            console.log(p.userData);
+
             return (
                 <MapView.Marker
+                    style={{ alignContent: "center" }}
                     coordinate={{
-                        latitude: p.latitude,
-                        longitude: p.longitude
+                        latitude: p.userData.latitude,
+                        longitude: p.userData.longitude
                     }}
                     ref={ref => {
                         this.marker = ref;
@@ -55,17 +60,20 @@ class HomePage extends React.Component {
                         source={mapMarker}
                     />
                     <MapView.Callout
-                        style={{ width: 400, alignContent: "center" }}
+                        style={{ width: 200, alignItems: "center" }}
                     >
                         <Text>
                             {p.user} {p.user}
                         </Text>
                         <Text>{p._id}</Text>
                         <Button
+                            style={{ alignSelf: "center" }}
                             title="Open WebBrowser"
                             onPress={this.handlePressButton.bind(p.user)}
                         >
-                            <Text style={{ color: "white" }}>
+                            <Text
+                                style={{ color: "white", textAlign: "center" }}
+                            >
                                 Visit My Page
                             </Text>
                         </Button>
@@ -77,17 +85,13 @@ class HomePage extends React.Component {
     handlePressButton = page => {
         WebBrowser.openBrowserAsync("https://google.com");
     };
+
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <MapView
                     style={{ flex: 1 }}
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421
-                    }}
+                    initialRegion={this.state.location}
                 >
                     <Header transparent>
                         <Left>

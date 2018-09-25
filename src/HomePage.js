@@ -36,7 +36,7 @@ const HomePage = () => {
                     <Scene
                         key="account"
                         component={Account}
-                        title="Complete Account"
+                        title="Account"
                         icon={TabIcon}
                     />
 

@@ -15,7 +15,7 @@ import {
     FormValidationMessage,
     Button
 } from "react-native-elements";
-import { WebBrowser } from "expo";
+import { WebBrowser, Location, Permissions } from "expo";
 import Meteor, { createContainer, Accounts } from "react-native-meteor";
 import HomePage from "./HomePage";
 
@@ -25,6 +25,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            location: null,
             userId: Meteor.userId(),
             firstname: "",
             lastname: "",
@@ -33,24 +34,49 @@ export default class HomeScreen extends React.Component {
             phone: "",
             hashtag: "",
             city: "",
+            latitude: null,
+            longitude: null,
             completed: false
         };
 
         // this.handleSubmit.bind(this);
     }
     componentWillMount() {
-        console.log(Meteor.userId());
-        console.log(Meteor.userId());
+        console.log(Meteor.userId(), this.state.location);
+        if (Platform.OS === "android" && !Constants.isDevice) {
+            this.setState({
+                errorMessage:
+                    "Oops, this will not work on Sketch in an Android emulator. Try it on your device!"
+            });
+        } else {
+            this._getLocationAsync();
+        }
     }
     handleSubmit = () => {
         console.log(this.state);
+        this.setState({ completed: true });
         Meteor.call("stylist.add", this.state, (err, res) => {
             console.log(this.state);
             console.log("Add funtion", err, res);
         });
-        this.setState({ completed: true });
+    };
+    _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== "granted") {
+            this.setState({
+                errorMessage: "Permission to access location was denied"
+            });
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        this.setState({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude
+        });
     };
     renderView = () => {
+        console.log("lat", this.state.latitude, "long", this.state.longitude);
+
         if (!this.state.completed) {
             return (
                 <View style={styles.container}>

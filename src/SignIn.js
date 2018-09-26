@@ -4,7 +4,7 @@ import { Form, Item, Label, Input, Button } from "native-base";
 import { Actions } from "react-native-router-flux";
 import HomePage from "./HomePage";
 
-var myBackground = require("../assets/32710104676_dd5a8282de_z.jpg");
+var myBackground = require("../assets/loginBackground.jpg");
 // var height = Dimensions.get("window").height;
 // var width = Dimensions.get("window").width;
 
@@ -24,7 +24,9 @@ class SignIn extends React.Component {
             // <View style={{}}>
             <ImageBackground
                 source={myBackground}
-                style={{ width: "100%", height: "80%" }}
+                style={{
+                    flex: 1
+                }}
             >
                 <View style={styles.inputStyle}>
                     <Form>
@@ -51,8 +53,23 @@ class SignIn extends React.Component {
                         </Item>
                     </Form>
                     <View style={{ marginTop: 10 }}>
-                        <Button primary block onPress={this.login}>
-                            <Text style={{ color: "white" }}>
+                        <Button
+                            primary
+                            onPress={this.login}
+                            style={{
+                                alignSelf: "center",
+                                padding: 8,
+                                marginTop: 20,
+                                backgroundColor: "#116f8e"
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 15,
+                                    fontWeight: "bold",
+                                    color: "white"
+                                }}
+                            >
                                 Sign In/Sign Up
                             </Text>
                         </Button>
@@ -67,7 +84,6 @@ class SignIn extends React.Component {
 const styles = {
     container: {
         flex: 1,
-        backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center"
     },
@@ -75,12 +91,13 @@ const styles = {
         flex: 1,
         flexDirection: "column",
         justifyContent: "center",
-        margin: 10
+        margin: 10,
+        padding: 10
     },
     input: {
         textAlign: "center",
         color: "black",
-        backgroundColor: "rgba(255,255,255, 0.2)",
+        backgroundColor: "rgba(255,255,255, 0.3)",
         borderRadius: 10
     }
 };

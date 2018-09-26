@@ -130,11 +130,11 @@ class HomePage extends React.Component {
                     initialRegion={this.state.location}
                 >
                     <Header transparent>
-                        <Left>
+                        <Right>
                             <Button transparent>
                                 <Icon name="power" />
                             </Button>
-                        </Left>
+                        </Right>
                     </Header>
                     {/* <MapView.Marker
                         coordinate={{

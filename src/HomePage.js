@@ -1,16 +1,63 @@
 import React, { Component } from "react";
-import { Text } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    PanResponder,
+    Share,
+    Alert
+} from "react-native";
 import { Router, Scene } from "react-native-router-flux";
+import { Icon } from "react-native-elements";
 
-import GrayScreen from "./GrayScreen";
+import SharePage from "./SharePage";
 import MapPage from "./MapPage";
 import Account from "./Account";
 
 import ModalScreen from "./SignUp";
 
 // Simple component to render something in place of icon
-const TabIcon = ({ selected, title }) => {
-    return <Text style={{ color: selected ? "red" : "black" }}>{title}</Text>;
+const ShareIcon = ({ focused, title }) => {
+    return (
+        <Icon
+            size={12}
+            raised
+            reverse
+            name="share"
+            type="share"
+            color={focused ? "green" : "grey"}
+        >
+            {title}
+        </Icon>
+    );
+};
+const MapIcon = ({ focused, title }) => {
+    return (
+        <Icon
+            size={12}
+            raised
+            reverse
+            name="map"
+            type="map"
+            color={focused ? "green" : "grey"}
+        >
+            {title}
+        </Icon>
+    );
+};
+const SettingsIcon = ({ focused, title }) => {
+    return (
+        <Icon
+            size={12}
+            raised
+            reverse
+            name="settings"
+            type="settings"
+            color={focused ? "green" : "grey"}
+        >
+            {title}
+        </Icon>
+    );
 };
 
 const HomePage = () => {
@@ -26,26 +73,28 @@ const HomePage = () => {
                 >
                     {/* Tab and it's scenes */}
                     <Scene
-                        key="map"
-                        component={MapPage}
-                        title="Map"
-                        icon={TabIcon}
-                    />
-
-                    {/* Tab and it's scenes */}
-                    <Scene
                         key="account"
                         component={Account}
                         title="Update Account"
-                        icon={TabIcon}
+                        icon={SettingsIcon}
                     />
+                    <Scene
+                        key="map"
+                        component={MapPage}
+                        title="Stylists Near You"
+                        icon={MapIcon}
+                        type="share"
+                        initial
+                    />
+
+                    {/* Tab and it's scenes */}
 
                     {/* Tab and it's scenes */}
                     <Scene
                         key="share"
-                        component={GrayScreen}
-                        title="Gold"
-                        icon={TabIcon}
+                        component={SharePage}
+                        title="Share Your Page"
+                        icon={ShareIcon}
                     />
                 </Scene>
 

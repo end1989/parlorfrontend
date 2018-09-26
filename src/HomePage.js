@@ -36,13 +36,13 @@ const HomePage = () => {
                     <Scene
                         key="account"
                         component={Account}
-                        title="Account"
+                        title="Update Account"
                         icon={TabIcon}
                     />
 
                     {/* Tab and it's scenes */}
                     <Scene
-                        key="gold"
+                        key="share"
                         component={GrayScreen}
                         title="Gold"
                         icon={TabIcon}

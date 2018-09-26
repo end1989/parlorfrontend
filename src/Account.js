@@ -18,6 +18,7 @@ import {
 import { WebBrowser } from "expo";
 import Meteor, { createContainer, Accounts } from "react-native-meteor";
 import HomePage from "./HomePage";
+import { Actions, Scene, Router } from "react-native-router-flux";
 
 const SERVER_URL = "ws://localhost:3000/websocket";
 
@@ -25,6 +26,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: "",
             userId: Meteor.userId(),
             firstname: "",
             lastname: "",
@@ -33,24 +35,45 @@ export default class HomeScreen extends React.Component {
             phone: "",
             hashtag: "",
             city: "",
+            images: "",
             completed: false
         };
 
         // this.handleSubmit.bind(this);
     }
     componentWillMount() {
-        console.log(Meteor.userId());
+        let users = Meteor.collection("stylist").find({});
+        let user = users.reduce((acc, curr) => {
+            if (curr["userData"]["userId"] === Meteor.userId()) {
+                acc = { id: curr["_id"], ...curr["userData"] };
+                return acc;
+            }
+            return acc;
+        }, {});
+        console.log(user);
+
+        this.setState({ ...user });
     }
     handleSubmit = () => {
-        console.log(this.state);
-        Meteor.call("stylist.add", this.state, (err, res) => {
+        Meteor.call("stylist.update", this.state, (err, res) => {
             console.log(this.state);
             console.log("Add funtion", err, res);
         });
-        this.setState({ completed: true });
+        Actions.share({ user: this.state.city });
+        // Meteor.collection("stylist").update(
+        //     { _id: this.state.id },
+        //     { ...this.state }
+        // );
+        // console.log(this.state);
+        // Meteor.call("stylist.add", this.state, (err, res) => {
+        //     console.log(this.state);
+        //     console.log("Add funtion", err, res);
+        // });
+        // this.setState({ completed: true });
     };
 
     render() {
+        console.log(this.state);
         return (
             <View style={styles.container}>
                 <ScrollView
@@ -63,41 +86,78 @@ export default class HomeScreen extends React.Component {
                             onChangeText={text =>
                                 this.setState({ firstname: text })
                             }
-                        />
+                        >
+                            <Text style={{ textAlign: "center" }}>
+                                {this.state.firstname}
+                            </Text>
+                        </FormInput>
                         <FormLabel>Last Name</FormLabel>
                         <FormInput
                             onChangeText={text =>
                                 this.setState({ lastname: text })
                             }
-                        />
-                        <FormLabel>Email</FormLabel>
-                        <FormInput
-                            onChangeText={text =>
-                                this.setState({ email: text })
-                            }
-                        />
+                        >
+                            <Text style={{ textAlign: "center" }}>
+                                {this.state.lastname}
+                            </Text>
+                        </FormInput>
                         <FormLabel>Greeting</FormLabel>
                         <FormInput
+                            inputStyle={{
+                                alignItems: "flex-end",
+                                height: 80
+                            }}
+                            multiline
                             onChangeText={text =>
                                 this.setState({ greeting: text })
                             }
-                        />
+                        >
+                            <Text
+                                style={{
+                                    textAlign: "center"
+                                }}
+                            >
+                                {this.state.greeting}
+                            </Text>
+                        </FormInput>
                         <FormLabel>Phone Number</FormLabel>
                         <FormInput
                             onChangeText={text =>
                                 this.setState({ phone: text })
                             }
-                        />
+                        >
+                            <Text style={{ textAlign: "center" }}>
+                                {this.state.phone}
+                            </Text>
+                        </FormInput>
                         <FormLabel>Page Hashtag</FormLabel>
                         <FormInput
                             onChangeText={text =>
                                 this.setState({ hashtag: text })
                             }
-                        />
+                        >
+                            <Text style={{ textAlign: "center" }}>
+                                {this.state.hashtag}
+                            </Text>
+                        </FormInput>
                         <FormLabel>City</FormLabel>
                         <FormInput
                             onChangeText={text => this.setState({ city: text })}
-                        />
+                        >
+                            <Text style={{ textAlign: "center" }}>
+                                {this.state.city}
+                            </Text>
+                        </FormInput>
+                        <FormLabel>Profile Image URL</FormLabel>
+                        <FormInput
+                            onChangeText={imageURL => {
+                                this.setState({ images: imageURL });
+                            }}
+                        >
+                            <Text style={{ textAlign: "center" }}>
+                                {this.state.images}
+                            </Text>
+                        </FormInput>
 
                         <Button
                             buttonStyle={{ backgroundColor: "green" }}
@@ -112,9 +172,6 @@ export default class HomeScreen extends React.Component {
     }
 }
 const styles = StyleSheet.create({
-    prices: {
-        minHeight: 90
-    },
     inputStyle: {
         minHeight: 90,
         height: 40,
@@ -126,14 +183,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff"
     },
-    developmentModeText: {
-        marginBottom: 20,
-        color: "rgba(0,0,0,0.4)",
-        fontSize: 14,
-        lineHeight: 19,
-        textAlign: "center"
-    },
     contentContainer: {
+        alignItems: "center",
         paddingTop: 30
     },
     welcomeContainer: {
@@ -141,22 +192,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 20
     },
-    welcomeImage: {
-        width: 100,
-        height: 80,
-        resizeMode: "contain",
-        marginTop: 3,
-        marginLeft: -10
-    },
     getStartedContainer: {
-        alignItems: "center",
         marginHorizontal: 50
-    },
-    getStartedText: {
-        paddingTop: 0,
-        fontSize: 40,
-        color: "pink",
-        lineHeight: 24,
-        textAlign: "center"
     }
 });

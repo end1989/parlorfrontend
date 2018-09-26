@@ -1,14 +1,71 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Actions } from "react-native-router-flux";
+import {
+    FacebookShareButton,
+    GooglePlusShareButton,
+    LinkedinShareButton,
+    TwitterShareButton,
+    TelegramShareButton,
+    WhatsappShareButton,
+    PinterestShareButton,
+    VKShareButton,
+    OKShareButton,
+    RedditShareButton,
+    TumblrShareButton,
+    LivejournalShareButton,
+    MailruShareButton,
+    ViberShareButton,
+    WorkplaceShareButton,
+    EmailShareButton
+} from "react-share";
+import {
+    FacebookShareCount,
+    GooglePlusShareCount,
+    LinkedinShareCount,
+    PinterestShareCount,
+    VKShareCount,
+    OKShareCount,
+    RedditShareCount,
+    TumblrShareCount
+} from "react-share";
+import {
+    FacebookIcon,
+    TwitterIcon,
+    TelegramIcon,
+    WhatsappIcon,
+    GooglePlusIcon,
+    LinkedinIcon,
+    PinterestIcon,
+    VKIcon,
+    OKIcon,
+    RedditIcon,
+    TumblrIcon,
+    LivejournalIcon,
+    MailruIcon,
+    ViberIcon,
+    WorkplaceIcon,
+    EmailIcon
+} from "react-share";
 
-const GrayScreen = () => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>Gray Screen</Text>
-        </View>
-    );
-};
+export default class GrayScreen extends Component {
+    state = {};
+    render() {
+        // console.log("Props pass test: ", this.props.user.city);
+
+        return (
+            <View style={styles.container}>
+                <FacebookShareCount url={"https//:www.facebook.com"}>
+                    {shareCount => (
+                        <span className="myShareCountWrapper">
+                            {shareCount}
+                        </span>
+                    )}
+                </FacebookShareCount>
+            </View>
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -24,5 +81,3 @@ const styles = StyleSheet.create({
         color: "#ffffff"
     }
 });
-
-export default GrayScreen;

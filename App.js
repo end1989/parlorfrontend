@@ -13,7 +13,7 @@ const SERVER_URL = "ws://localhost:3000/websocket";
 
 export default class App extends React.Component {
     state = {
-        loggedIn: false,
+        loggedIn: true,
         signUp: false
     };
     componentWillMount() {

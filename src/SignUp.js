@@ -36,7 +36,8 @@ export default class HomeScreen extends React.Component {
             city: "",
             latitude: null,
             longitude: null,
-            completed: false
+            completed: false,
+            images: ""
         };
 
         // this.handleSubmit.bind(this);
@@ -127,6 +128,12 @@ export default class HomeScreen extends React.Component {
                                 onChangeText={text =>
                                     this.setState({ city: text })
                                 }
+                            />
+                            <FormLabel>Profile Image URL</FormLabel>
+                            <FormInput
+                                onChangeText={imageURL => {
+                                    this.setState({ images: imageURL });
+                                }}
                             />
 
                             <Button

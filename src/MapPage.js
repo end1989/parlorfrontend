@@ -38,10 +38,8 @@ class HomePage extends React.Component {
         });
     };
     renderStylist = () => {
-        console.log("maptest", this.props.stylist[40]);
-
         return this.props.stylist.map(p => {
-            console.log(p.userData);
+            console.log(p.userData.latitude);
 
             return (
                 <MapView.Marker
@@ -60,16 +58,50 @@ class HomePage extends React.Component {
                         source={mapMarker}
                     />
                     <MapView.Callout
-                        style={{ width: 200, alignItems: "center" }}
+                        style={{
+                            width: 200,
+                            alignItems: "center",
+                            backgroundColor: "#c6b3c0"
+                        }}
                     >
-                        <Text>
-                            {p.user} {p.user}
+                        <Text
+                            style={{
+                                padding: 15,
+                                fontSize: 19,
+                                fontWeight: "bold"
+                            }}
+                        >
+                            {p.userData.firstname} {p.userData.lastname}
                         </Text>
-                        <Text>{p._id}</Text>
+                        <Image
+                            source={{ uri: p.userData.images }}
+                            style={{
+                                height: 100,
+                                width: 100,
+                                borderRadius: 50,
+                                borderWidth: 0.5,
+                                borderColor: "black"
+                            }}
+                        />
+                        <Text
+                            style={{
+                                fontWeight: "500",
+                                fontSize: 12,
+                                margin: 10
+                            }}
+                        >
+                            {p.userData.greeting}
+                        </Text>
                         <Button
-                            style={{ alignSelf: "center" }}
+                            style={{
+                                margin: 10,
+                                alignSelf: "center",
+                                height: 30,
+                                padding: 10,
+                                backgroundColor: "#274f8e"
+                            }}
                             title="Open WebBrowser"
-                            onPress={this.handlePressButton.bind(p.user)}
+                            onPress={() => this.handlePressButton(p)}
                         >
                             <Text
                                 style={{ color: "white", textAlign: "center" }}
@@ -82,8 +114,12 @@ class HomePage extends React.Component {
             );
         });
     };
-    handlePressButton = page => {
-        WebBrowser.openBrowserAsync("https://google.com");
+    handlePressButton = user => {
+        console.log(user.userData.hashtag);
+
+        WebBrowser.openBrowserAsync(
+            "https://theparlor.herokuapp.com/" + user.userData.hashtag
+        );
     };
 
     render() {

@@ -23,4 +23,4 @@ Book appointments.
 Technologies
 HTML, CSS, Javascript, MongoDB, Mongoose, React-Native, Meteor, Node.js, EJS
 
-![](TheParlorDemoGif.gif) 
+![](./TheParlorDemoGif.gif) 
